@@ -252,7 +252,20 @@ def output_csv(data, filename) -> None:
     # ==============================
     # YOUR CODE STARTS HERE
     # ==============================
-    pass
+    with open(filename, "w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            "Listing Title",
+            "Listing ID",
+            "Policy Number",
+            "Host Type",
+            "Host Name",
+            "Room Type",
+            "Location Rating",
+        ])
+        for row in sorted_data:
+            writer.writerow(row)
+   
     # ==============================
     # YOUR CODE ENDS HERE
     # ==============================
