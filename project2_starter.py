@@ -93,6 +93,7 @@ def load_listing_results(html_path) -> list[tuple]:
 
 
 def get_listing_details(listing_id) -> dict:
+
     """
     Parse through listing_<id>.html to extract listing details.
 
@@ -110,12 +111,104 @@ def get_listing_details(listing_id) -> dict:
                 "location_rating": float
             }
         }
-    """
-    # TODO: Implement checkout logic following the instructions
+ """
     # ==============================
     # YOUR CODE STARTS HERE
     # ==============================
-    pass
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    html_path = os.path.join(base_dir, "html_files", f"listing_{listing_id}.html")
+
+    with open(html_path, "r", encoding="utf-8-sig") as f:
+        soup = BeautifulSoup(f, "html.parser")
+
+    full_text = soup.get_text(" ", strip=True)
+
+    # ------------------------------------------------------------------
+    # Policy Number
+    # ------------------------------------------------------------------
+    policy_number = "Exempt"
+
+    m = re.search(r'\b(20\d{2}-\d+STR)\b', full_text)
+    if m:
+        policy_number = m.group(1)
+    else:
+        m = re.search(r'\b(STR-\d+)\b', full_text)
+        if m:
+            policy_number = m.group(1)
+        elif re.search(r'\bpending\b', full_text, re.IGNORECASE):
+            policy_number = "Pending"
+        else:
+            m = re.search(r'[Pp]olicy number[:\s]+(\d+)', full_text)
+            if m:
+                policy_number = m.group(1)
+
+    # ------------------------------------------------------------------
+    # Host Type
+    # ------------------------------------------------------------------
+    host_type = "Superhost" if "Superhost" in full_text else "regular"
+
+    # ------------------------------------------------------------------
+    # Host Name
+    # ------------------------------------------------------------------
+    host_name = ""
+    m = re.search(
+        r'Hosted by\s+([A-Z][a-z]+(?:\s+[Aa]nd\s+[A-Z][a-z]+)?)',
+        full_text
+    )
+    if m:
+        host_name = m.group(1).strip()
+
+    # ------------------------------------------------------------------
+    # Room Type
+    # ------------------------------------------------------------------
+    room_type = "Entire Room"
+
+    for tag in soup.find_all(["h1", "h2", "h3", "h4"]):
+        text = tag.get_text(" ", strip=True).lower()
+        if not text:
+            continue
+        if "private" in text:
+            room_type = "Private Room"
+            break
+        elif "shared" in text:
+            room_type = "Shared Room"
+            break
+        elif " in " in text:
+            break
+
+    # Fallback: check <title> and og:title meta
+    if room_type == "Entire Room":
+        title_tag = soup.find("title")
+        og_title = soup.find("meta", property="og:title")
+        for candidate_text in [
+            title_tag.get_text() if title_tag else "",
+            og_title.get("content", "") if og_title else "",
+        ]:
+            lower = candidate_text.lower()
+            if "private" in lower:
+                room_type = "Private Room"
+                break
+            elif "shared" in lower:
+                room_type = "Shared Room"
+                break
+
+    # ------------------------------------------------------------------
+    # Location Rating
+    # ------------------------------------------------------------------
+    location_rating = 0.0
+    m = re.search(r'[Ll]ocation\s+(\d+\.\d+)', full_text)
+    if m:
+        location_rating = float(m.group(1))
+
+    return {
+        listing_id: {
+            "policy_number":   policy_number,
+            "host_type":       host_type,
+            "host_name":       host_name,
+            "room_type":       room_type,
+            "location_rating": location_rating,
+        }
+    }
     # ==============================
     # YOUR CODE ENDS HERE
     # ==============================
