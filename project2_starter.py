@@ -385,7 +385,7 @@ def google_scholar_searcher(query):
             "AppleWebKit/537.36 (KHTML, like Gecko) "
             "Chrome/114.0.0.0 Safari/537.36"
         )
-    }
+    }#a
     response = requests.get(url, params={"q": query}, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
 
