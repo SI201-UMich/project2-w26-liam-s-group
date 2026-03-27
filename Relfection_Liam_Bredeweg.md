@@ -1,0 +1,10 @@
+1. The current system is inadequate because it doesn't use actual auditing and instead uses a complaint system that doesn’t pick up on plenty of short term rentals that need to be held accountable. Hosts that don't receive complaints about them from neighbors or tenants can run short term rentals forever without consequences. The burden of responsibility is on the public rather than the government or an established private company like Airbnb. The SWE Code of Ethics emphasizes that software engineers should act in the public interest. Airbnb is not doing this at the moment because they are not enforcing city guidelines on their own site. What they should do is cross reference the house with the city guidelines before the listing goes up to ensure no laws are broken and everyone is playing by the rules. 
+
+
+2. One factor I think is really important is how vague the Computer Fraud and Abuse Act (CFAA) is when it comes to what counts as "unauthorized access." It is currently under discussion whether violating a website's terms and conditions can trigger the CFAA. In Sandvig v. Barr, a federal judge, ruled that breaking a site's terms of service isn't enough to trigger the CFAA. The court pointed out that terms of service are usually buried in fine print, constantly changing, and way too vague to define the line between legal and criminal behavior. But there still is a lot of uncertainty going forward and no real president set. I think this is an important factor because it shows how much legal risk researchers and journalists take on just for collecting publicly visible information.
+
+3. My first guideline is to only scrape data that's genuinely public just because you can access it doesn’t mean it's something that a person wants out in the world. I feel like a good rule for this is if someone has to log in to see its not actually public information. My second is before scraping, it's worth asking whether the people whose information you're collecting could actually be harmed by what you're doing with it. Like with the case of Clearview AI, public data can be used in ways that people don’t want it used for.
+
+
+
+-Liam Bredeweg
