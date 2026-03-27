@@ -41,7 +41,52 @@ def load_listing_results(html_path) -> list[tuple]:
     # ==============================
     # YOUR CODE STARTS HERE
     # ==============================
-    pass
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    abs_path = os.path.join(base_dir, html_path) if not os.path.isabs(html_path) else html_path
+ 
+    with open(abs_path, "r", encoding="utf-8-sig") as f:
+        soup = BeautifulSoup(f, "html.parser")
+ 
+    listings = []
+    seen_ids = set()
+ 
+    for link in soup.find_all("a", href=True):
+        href = link.get("href", "")
+        id_match = re.search(r"/rooms/(?:plus/)?(\d+)", href)
+        if not id_match:
+            continue
+ 
+        listing_id = id_match.group(1)
+        if listing_id in seen_ids:
+            continue
+        seen_ids.add(listing_id)
+
+
+ 
+        title = None
+ 
+        # The title lives in the parent div's text, as the first segment
+        for container in [link.parent, link.parent.parent if link.parent else None]:
+            if not container:
+                continue
+            parent_text = container.get_text(separator="|", strip=True)
+            first_segment = parent_text.split("|")[0].strip()
+            if 5 < len(first_segment) < 100 and not first_segment.isdigit():
+                title = first_segment
+                break
+ 
+        # Fallback: check aria-label on the link itself
+        if not title:
+            aria = link.get("aria-label", "").strip()
+            if aria:
+                title = aria.split("|")[0].strip()
+ 
+        if title:
+            listings.append((title, listing_id))
+ 
+
+
+    return listings
     # ==============================
     # YOUR CODE ENDS HERE
     # ==============================
@@ -195,7 +240,9 @@ class TestCases(unittest.TestCase):
     def test_load_listing_results(self):
         # TODO: Check that the number of listings extracted is 18.
         # TODO: Check that the FIRST (title, id) tuple is  ("Loft in Mission District", "1944564").
-        pass
+        self.assertEqual(len(self.listings), 18)
+
+        self.assertEqual(self.listings[0], ("Loft in Mission District", "1944564"))
 
     def test_get_listing_details(self):
         html_list = ["467507", "1550913", "1944564", "4614763", "6092596"]
