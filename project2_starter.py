@@ -432,18 +432,31 @@ class TestCases(unittest.TestCase):
         # TODO: Call output_csv() to write the detailed_data to a CSV file.
         # TODO: Read the CSV back in and store rows in a list.
         # TODO: Check that the first data row matches ["Guesthouse in San Francisco", "49591060", "STR-0000253", "Superhost", "Ingrid", "Entire Room", "5.0"].
+        out_path = os.path.join(self.base_dir, "test.csv")
+        output_csv(self.detailed_data, out_path)
+        rows = []
+        with open(out_path, "r", encoding="utf-8-sig") as f:
+            reader = csv.reader(f)
+            rows = list(reader)
 
+        self.assertEqual(
+            rows[1],
+            ["Guesthouse in San Francisco", "49591060", "STR-0000253",
+             "Superhost", "Ingrid", "Entire Room", "5.0"]
+        )
         os.remove(out_path)
 
     def test_avg_location_rating_by_room_type(self):
         # TODO: Call avg_location_rating_by_room_type() and save the output.
         # TODO: Check that the average for "Private Room" is 4.9.
-        pass
+        result = avg_location_rating_by_room_type(self.detailed_data)
+        self.assertAlmostEqual(result["Private Room"], 4.9, places=1)
 
     def test_validate_policy_numbers(self):
         # TODO: Call validate_policy_numbers() on detailed_data and save the result into a variable invalid_listings.
         # TODO: Check that the list contains exactly "16204265" for this dataset.
-        pass
+        invalid_listings = validate_policy_numbers(self.detailed_data)
+        self.assertEqual(invalid_listings, ["16204265"])
 
 
 def main():
