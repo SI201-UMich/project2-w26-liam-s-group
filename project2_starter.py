@@ -480,6 +480,7 @@ class TestCases(unittest.TestCase):
         # TODO: Call validate_policy_numbers() on detailed_data and save the result into a variable invalid_listings.
         # TODO: Check that the list contains exactly "16204265" for this dataset.
         invalid_listings = validate_policy_numbers(self.detailed_data)
+        self.assertEqual(len(invalid_listings), 1)
         self.assertEqual(invalid_listings, ["16204265"])
 
 
