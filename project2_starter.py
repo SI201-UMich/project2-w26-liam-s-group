@@ -392,7 +392,7 @@ def google_scholar_searcher(query):
     titles = []
     for tag in soup.find_all("h3", class_="gs_rt"):
         title_text = tag.get_text(strip=True)
-        title_text = re.sub(r'^\[.*?\]\s*', '', title_text)
+        title_text = re.sub(r'^\[.*?\]\s*', '', title_text).strip()
         titles.append(title_text)
 
     return titles
@@ -452,7 +452,9 @@ class TestCases(unittest.TestCase):
         out_path = os.path.join(self.base_dir, "test.csv")
 
         # TODO: Call output_csv() to write the detailed_data to a CSV file.
+        
         # TODO: Read the CSV back in and store rows in a list.
+    
         # TODO: Check that the first data row matches ["Guesthouse in San Francisco", "49591060", "STR-0000253", "Superhost", "Ingrid", "Entire Room", "5.0"].
         out_path = os.path.join(self.base_dir, "test.csv")
         output_csv(self.detailed_data, out_path)
