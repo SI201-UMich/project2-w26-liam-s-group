@@ -1,7 +1,7 @@
 # SI 201 HW4 (Library Checkout System)
 # Your name: Arnav Senthil, John Mcwilliams, Liam Bredeweg
-# Your student id: 34854614
-# Your email: arnavsen@umich.edu,johnmcw@umich.edu,liambredeweg@umich.edu
+# Your student id: 34854614, 6147 6298 (liam)
+# Your email: arnavsen@umich.edu,johnmcw@umich.edu,liamfb@umich.edu
 # Who or what you worked with on this homework (including generative AI like ChatGPT):  
 # If you worked with generative AI also add a statement for how you used it.
 # e.g.: Used Gen AI to help understand and evaluate concepts to renforce learning
